@@ -133,6 +133,7 @@ env = make_vec_env(
 ![Mean Reward](Graph/mean_reward_ep.png)
 
 **Interpretation:** ✅ **Excellent Learning Progress**
+- **What it is**: The average reward per episode during training rollouts
 - **Trend**: Strong improvement from -160 to -40 (75% improvement)
 - **Convergence**: Stable plateau around -40 after 3M steps
 - **Significance**: Agent learned to reduce passenger stalling by ~75%
@@ -141,7 +142,8 @@ env = make_vec_env(
 ![Evaluation Reward](Graph/mean_reward_for_eval.png)
 
 **Interpretation:** ✅ **Robust Performance**
-- **Final Performance**: Converged to -36 average reward
+- **What it is**: Mean reward on evaluation episodes (separate from training rollouts)
+- **Final Performance**: Started at -150 and converged to -36 average reward
 - **Stability**: Smooth convergence without overfitting
 - **Generalization**: Consistent performance across evaluation episodes
 
@@ -149,6 +151,7 @@ env = make_vec_env(
 ![Explained Variance](Graph/Explained_variance.png)
 
 **Interpretation:** ✅ **Good Value Function Learning**
+- **What it is**: How well the value function predicts returns (R² metric, 1.0 = perfect, 0 = random)
 - **Range**: 0.65-0.75 (good predictive capability)
 - **Meaning**: Value function explains ~70% of return variance
 - **Stability**: Consistent performance throughout training
@@ -157,9 +160,10 @@ env = make_vec_env(
 ![Clip Fraction](Graph/clip_fraction.png)
 
 **Interpretation:** ✅ **Healthy Policy Updates**
+- **What it is**: Fraction of policy updates that were clipped by PPO’s surrogate objective
 - **Initial Phase**: 0.18 (active learning and exploration)
 - **Later Phase**: 0.11 (more conservative, stable updates)
-- **Trend**: Decreasing clip fraction indicates policy stabilization
+- **Trend**: Early on, many updates were clipped (big policy changes). Later, updates are smaller → the policy has stabilized. This is expected when learning converges.
 
 #### 📏 Approximate KL Divergence
 ![Approximate KL](Graph/approx_k.png)
@@ -167,7 +171,7 @@ env = make_vec_env(
 **Interpretation:** ✅ **Controlled Policy Changes**
 - **Range**: 0.015-0.025 (moderate policy updates)
 - **Stability**: Consistent KL values indicate stable learning
-- **Safety**: No excessive policy changes that could destabilize training
+- **Safety**: PPO’s trust region constraint is working. KL is within a safe range (<0.1), meaning the policy updates are stable. If this shot up, it would signal learning instability.
 
 ## 🚀 Getting Started
 
