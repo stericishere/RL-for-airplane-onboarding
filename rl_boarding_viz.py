@@ -1,14 +1,12 @@
 import pygame
 import sys
-import math
 import numpy as np
 import gymnasium as gym
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), 'RL ENV'))
-from airplane_boarding import AirplaneEnv, PassengerStatus
+from airplane_boarding import PassengerStatus
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.utils import get_action_masks
-import time
 
 # Initialize Pygame
 pygame.init()
@@ -199,7 +197,12 @@ class RLBoardingVisualization:
                 seat_rect = seat_text.get_rect(center=(center_x, center_y - 3))
                 self.screen.blit(seat_text, seat_rect)
                 
-                status_text = font.render(str(passenger.status).split('.')[1][:3], True, BLACK)
+                status_str = str(passenger.status)
+                if '.' in status_str:
+                    status_display = status_str.split('.')[1][:3]
+                else:
+                    status_display = status_str[:3]
+                status_text = font.render(status_display, True, BLACK)
                 status_rect = status_text.get_rect(center=(center_x, center_y + 5))
                 self.screen.blit(status_text, status_rect)
     
