@@ -49,7 +49,6 @@ observation_space = Box(low=-1, high=49, shape=(50,), dtype=np.int32)
   - `0` = MOVING (passenger progressing through aisle)
   - `1` = STALLED (blocked by passenger ahead)  
   - `2` = STOWING (storing luggage overhead)
-  - `3` = SEATED (successfully seated)
 
 **Example State:**
 ```
@@ -66,7 +65,7 @@ The reward system incentivizes efficient boarding by **penalizing congestion**:
 
 ```python
 def _calculate_reward(self):
-    reward = -self.boarding_line.num_passengers_stalled()
+    reward = -self.boarding_line.num_passengers_stalled() + self.boarding_line.num_passengers_stowing()
     return reward
 ```
 
